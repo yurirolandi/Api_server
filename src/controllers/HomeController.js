@@ -1,4 +1,7 @@
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import User from '../models/User';
+import authconfig from '../config/auth.json';
 
 class HomeController {
   async index(req, res) {
@@ -39,11 +42,40 @@ class HomeController {
 
       newUser.password = undefined;
 
-      return res.send(newUser);
+      const token = jwt.sign({ id: newUser.id }, authconfig.secret, {
+        expiresIn: 86400,
+      });
+
+      return res.send({ newUser, token });
     } catch (error) {
-      console.log('error => ', error);
       return res.status(400).send({ error: 'Register failed' });
     }
+  }
+
+  async autencicate(req, res) {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Usuário inexistente',
+      });
+    }
+
+    if (!await bcrypt.compare(password, user.password)) {
+      return res.status(400).json({
+        message: 'Senha Inválida',
+      });
+    }
+
+    user.password = undefined;
+
+    const token = jwt.sign({ id: user.id }, authconfig.secret, {
+      expiresIn: 86400,
+    });
+
+    return res.send({ user, token });
   }
 }
 
