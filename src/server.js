@@ -1,4 +1,8 @@
+import dotenv from 'dotenv';
 import app from './app';
 
-const port = 3333;
+dotenv.config();
+
+const port = process.env.DATABASE_PORT;
+
 app.listen(port);
