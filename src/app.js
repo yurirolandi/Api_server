@@ -1,13 +1,17 @@
+import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import routes from './routes';
+
+dotenv.config();
 
 class App {
   constructor() {
     this.app = express();
 
     mongoose.connect(
-      'mongodb+srv://rolandi21:86864564rr@cluster0.vhfiu.mongodb.net/Cluster0?retryWrites=true&w=majority',
+      `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DATABASE_PASSWOARD}@cluster0.vhfiu.mongodb.net/Cluster0?   retryWrites=true&w=majority
+      `,
       {
         useNewUrlParser: true,
         useCreateIndex: true,
