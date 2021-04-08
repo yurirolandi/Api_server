@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-import authconfig from '../config/auth.json';
 
 class HomeController {
   async index(req, res) {
@@ -42,7 +41,7 @@ class HomeController {
 
       newUser.password = undefined;
 
-      const token = jwt.sign({ id: newUser.id }, authconfig.secret, {
+      const token = jwt.sign({ id: newUser.id }, process.env.DATABASE_SECRET_KEY, {
         expiresIn: 86400,
       });
 
@@ -71,7 +70,7 @@ class HomeController {
 
     user.password = undefined;
 
-    const token = jwt.sign({ id: user.id }, authconfig.secret, {
+    const token = jwt.sign({ id: user.id }, process.env.DATABASE_SECRET_KEY, {
       expiresIn: 86400,
     });
 
