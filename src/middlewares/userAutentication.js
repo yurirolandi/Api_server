@@ -1,30 +1,33 @@
 import jwt from 'jsonwebtoken';
 
 module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization;
+  const { authorization } = req.headers;
 
-  if (!authHeader) {
+  if (!authorization) {
     return res.status(401).send({ message: 'Não autorizado!' });
   }
 
-  const parts = authHeader.split(' ');
-
-  if (!parts.length === 2) {
-    return res.status(401).send({ message: 'Token error!' });
+  if (authorization === 'Basic Og==') {
+    return res.status(401).send({ message: 'Não autorizado!' });
   }
 
-  const [scheme, token] = parts;
+  console.log('authorization', authorization);
 
-  if (!/^Bearer$/i.test(scheme)) {
-    return res.status(401).send({ message: 'Token mal formatado!' });
-  }
+  const [, token] = authorization.split(' ');
 
-  return jwt.verify(token, process.env.DATABASE_SECRET_KEY, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: 'Token inválido!' });
-    }
+  try {
+    const dados = jwt.verify(token, process.env.DATABASE_SECRET_KEY);
+    console.log('dados', dados.id);
+    const { id } = dados;
 
-    req.userId = decoded.id;
+    console.log('req', req);
+    req.userId = id;
     return next();
-  });
+  } catch (error) {
+    return res.status(401).json({
+      message: 'Token inválido'
+    })
+  }
+
+  ;
 };
