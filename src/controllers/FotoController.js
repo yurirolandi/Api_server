@@ -13,10 +13,10 @@ class FotoController {
         })
       }
 
-      const foto = await Foto.create({
-        originalName,
-        fileName
-      });
+      // const foto = await Foto.create({
+      //   originalName,
+      //   fileName
+      // });
 
 
 
