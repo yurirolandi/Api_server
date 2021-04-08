@@ -2,19 +2,19 @@ import Router from 'express';
 import homeController from './controllers/HomeController';
 import GrausController from './controllers/GrausController';
 import FotoController from './controllers/FotoController';
-
+import userAutentication from './middlewares/userAutentication';
 
 
 
 const routes = new Router();
 
 routes.get('/', homeController.index);
-routes.post('/registerUser/', homeController.createUser);
-routes.post('/autenticate/', homeController.autencicate);
+routes.post('/api/registerUser/', homeController.createUser);
+routes.post('/api/autenticate/', homeController.autencicate);
 
-routes.get('/graus', GrausController.index)
-routes.post('/registergraus/', GrausController.create)
+routes.get('/api/graus', GrausController.index)
+routes.post('/api/registergraus/', GrausController.create)
 
-routes.post('/foto/', FotoController.store)
+routes.post('/api/foto/', userAutentication, FotoController.store)
 
 export default routes;
