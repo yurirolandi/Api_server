@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-import authConfig from '../config/auth';
 
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -20,7 +19,7 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ message: 'Token mal formatado!' });
   }
 
-  return jwt.verify(token, authConfig.secret, (err, decoded) => {
+  return jwt.verify(token, process.env.DATABASE_SECRET_KEY, (err, decoded) => {
     if (err) {
       return res.status(401).send({ message: 'Token inválido!' });
     }
