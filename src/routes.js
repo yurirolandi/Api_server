@@ -8,7 +8,7 @@ import userAutentication from './middlewares/userAutentication';
 
 const routes = new Router();
 
-routes.get('/', homeController.index);
+routes.get('/api/login', homeController.index);
 routes.post('/api/registerUser/', homeController.createUser);
 routes.post('/api/autenticate/', homeController.autencicate);
 
