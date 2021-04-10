@@ -22,6 +22,11 @@ const UserSchema = new Schema({
     require: true,
     unique: false,
   },
+  acesso: {
+    type: Number,
+    require: true,
+    unique: false,
+  },
 
 }, { timestamps: true });
 

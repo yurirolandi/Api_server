@@ -23,6 +23,7 @@ class HomeController {
         nome,
         idade,
         password,
+        acesso,
       } = req.body;
 
       const userEmail = await User.findOne({ email });
@@ -37,6 +38,7 @@ class HomeController {
         nome,
         idade,
         password,
+        acesso,
       });
 
       newUser.password = undefined;
