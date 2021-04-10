@@ -5,8 +5,6 @@ import User from '../models/User';
 class HomeController {
   async index(req, res) {
     const { email } = req.query;
-    console.log('reque ======>', req);
-    console.log('email', email);
     const user = await User.findOne({ email });
 
     if (!user) {
